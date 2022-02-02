@@ -14,14 +14,14 @@
                         </div>
                     @endif
                     @if(Session::has('authenticated'))
-                        <div class="alert alert-danger">
                         {{-- {!! Session::get('authenticated') !!} --}}
                         @php
                             print_r(Session::get('authenticated'));
                         @endphp
-                        </div>
                     @endif
-
+                    @if($profileData)
+                        {!! print_r($profileData)!!}
+                    @endif
                     {{ __('You are logged in!') }}
                 </div>
             </div>

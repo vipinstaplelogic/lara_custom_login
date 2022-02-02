@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Http;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,7 +24,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::post('login-new',[App\Http\Controllers\LoginController::class,'login'])->name('custom-login');
 
 Route::group(['middleware' => ['web', 'custom_auth']], function () {
-    Route::get('/success', function(){
-        return view('home');
-    })->name('success');
+    
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class,'index'])->name('profile.index');
 });
