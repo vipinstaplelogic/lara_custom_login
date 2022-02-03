@@ -5,27 +5,26 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Http\Traits\ResponseTrait;
 
 class ProfileController extends Controller
 {
+    use ResponseTrait;
     public function __construct()
     {
         $this->middleware('custom_auth');
     }
     public function index()
     {
-
         try{
+            $url = $this->baseUrl.'profile';
             $token = request()->session()->get('authenticated');
-            $data = Http::withToken($token['token'])->post('http://50.116.49.118/lara_hsvphry/api/profile',[
+            $data = Http::withToken($token['token'])->post($url,[
                 'user_id' => $token['user_id'],
             ]);
     
             if($data->successful()){
-                $body = $data->json();
-                if($body['status'] = "success" && $body['status_code'] == 200){
-                    $profileData =  $body['data'];
-                }
+                $profileData = $this->response($data);
             }
             return view('home', compact('profileData'));
            

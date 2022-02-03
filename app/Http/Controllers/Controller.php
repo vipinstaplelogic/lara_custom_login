@@ -10,4 +10,6 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected $baseUrl = 'http://50.116.49.118/lara_hsvphry/api/';
 }

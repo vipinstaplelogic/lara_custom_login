@@ -13,7 +13,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         try{
-            
+            $url = $this->baseUrl.'login';
             $request->session()->forget('authenticated');
 
             $request->validate([
@@ -21,30 +21,20 @@ class LoginController extends Controller
                 'password' => 'bail|required',
             ]);
             
-            $response = Http::post('http://50.116.49.118/lara_hsvphry/api/login', [
+            $response = Http::post($url, [
                 'user_id' => $request->user_id,
                 'password' => $request->password,
             ]);
             
             if ($response->successful()) {
-                $body = $response->json();
-                if($body['status'] = "success" && $body['status_code'] == 200){
+                $data = $this->response($response);
+                $request->session()->put('authenticated', $data);
 
-                    $request->session()->put('authenticated', $body['data']);
-
-                    return redirect(route('profile.index'));
-                }
-                else{
-                    return view('auth.login', [
-                        'error' => 'Please provide a valid cred.',
-                    ]);
-                }
+                return redirect(route('profile.index'));
             }
             if($response->failed())
             {
-                return view('auth.login', [
-                    'error' => 'Please provide a valid cred.',
-                ]);
+                return redirect(route('login'))->withError('Please provide a valid cred.');
             }
         }catch(RequestException $e){
 
