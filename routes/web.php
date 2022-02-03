@@ -23,7 +23,12 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::post('login-new',[App\Http\Controllers\LoginController::class,'login'])->name('custom-login');
 
-Route::group(['middleware' => ['web', 'custom_auth']], function () {
+Route::group(['middleware' => ['web','custom_auth']], function () {
     
     Route::get('/profile', [App\Http\Controllers\ProfileController::class,'index'])->name('profile.index');
+});
+
+Route::get('/users', function(){
+    $users = \App\Models\User::all();
+    return view('user',compact('users'));
 });
